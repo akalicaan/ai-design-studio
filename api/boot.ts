@@ -6,8 +6,12 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter } from "./router";
 import { createContext } from "./context";
 import { env } from "./lib/env";
+import { seedPricingPlans } from "./seed";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
+
+// Seed default data on startup (non-blocking)
+seedPricingPlans().catch(console.error);
 
 // Security headers middleware
 app.use(async (c, next) => {

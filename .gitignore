@@ -30,7 +30,6 @@ dist-ssr
 *.db
 *.sqlite
 *.sqlite3
-# Package lock (auto-generated, may contain mirror URLs)
 # TypeScript cache
 *.tsbuildinfo
 # Build outputs

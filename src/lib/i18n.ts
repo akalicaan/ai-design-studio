@@ -72,6 +72,15 @@ export const translations = {
     aipattern_colors_placeholder: "e.g. navy blue, gold, cream",
     aipattern_generate: "Generate Pattern",
     aipattern_creating: "AI is designing your pattern...",
+    aipattern_reference: "Reference Image (Optional)",
+    aipattern_reference_upload: "Upload pattern reference",
+    aipattern_prompt_hint: "Works in any language: English, Türkçe, العربية, 中文...",
+    aipattern_error_empty: "Please enter a pattern description",
+    aipattern_suggestions: "Quick Prompts",
+    suggestion_floral: "Floral",
+    suggestion_geometric: "Geometric",
+    suggestion_abstract: "Abstract",
+    suggestion_textile: "Textile",
 
     // How it works
     hiw_title: "How it works",
@@ -242,6 +251,15 @@ export const translations = {
     aipattern_colors_placeholder: "örn. lacivert, altın, krem",
     aipattern_generate: "Desen Oluştur",
     aipattern_creating: "AI deseninizi tasarlıyor...",
+    aipattern_reference: "Referans Resim (Opsiyonel)",
+    aipattern_reference_upload: "Desen referansı yükleyin",
+    aipattern_prompt_hint: "Her dilde yazabilirsiniz: Türkçe, English, العربية, 中文...",
+    aipattern_error_empty: "Lütfen bir desen açıklaması girin",
+    aipattern_suggestions: "Hazır Promptlar",
+    suggestion_floral: "Çiçekli",
+    suggestion_geometric: "Geometrik",
+    suggestion_abstract: "Soyut",
+    suggestion_textile: "Tekstil",
 
     // How it works
     hiw_title: "Nasıl Çalışır",

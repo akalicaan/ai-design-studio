@@ -85,75 +85,85 @@ export default function Landing() {
             <p className="text-muted-foreground">{_("tools_subtitle")}</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
-            <Card className="bg-background/60 backdrop-blur border-border/50">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Scissors className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{_("tool_vectorize_title")}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{_("tool_vectorize_desc")}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Check className="w-3.5 h-3.5 text-green-500" />
-                  {_("tool_vectorize_credit")}
-                </div>
-              </CardContent>
-            </Card>
+            <Link to="/workspace?tool=vectorize" className="block">
+              <Card className="bg-background/60 backdrop-blur border-border/50 h-full cursor-pointer transition-all hover:shadow-lg hover:border-primary/40 hover:-translate-y-1">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Scissors className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{_("tool_vectorize_title")}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{_("tool_vectorize_desc")}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Check className="w-3.5 h-3.5 text-green-500" />
+                    {_("tool_vectorize_credit")}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-            <Card className="bg-background/60 backdrop-blur border-border/50">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Image className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{_("tool_bgremove_title")}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{_("tool_bgremove_desc")}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Check className="w-3.5 h-3.5 text-green-500" />
-                  {_("tool_bgremove_credit")}
-                </div>
-              </CardContent>
-            </Card>
+            <Link to="/workspace?tool=bg_remove" className="block">
+              <Card className="bg-background/60 backdrop-blur border-border/50 h-full cursor-pointer transition-all hover:shadow-lg hover:border-primary/40 hover:-translate-y-1">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Image className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{_("tool_bgremove_title")}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{_("tool_bgremove_desc")}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Check className="w-3.5 h-3.5 text-green-500" />
+                    {_("tool_bgremove_credit")}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-            <Card className="bg-background/60 backdrop-blur border-border/50">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <ZoomIn className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{_("tool_upscale_title")}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{_("tool_upscale_desc")}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Check className="w-3.5 h-3.5 text-green-500" />
-                  {_("tool_upscale_credit")}
-                </div>
-              </CardContent>
-            </Card>
+            <Link to="/workspace?tool=upscale" className="block">
+              <Card className="bg-background/60 backdrop-blur border-border/50 h-full cursor-pointer transition-all hover:shadow-lg hover:border-primary/40 hover:-translate-y-1">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <ZoomIn className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{_("tool_upscale_title")}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{_("tool_upscale_desc")}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Check className="w-3.5 h-3.5 text-green-500" />
+                    {_("tool_upscale_credit")}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-            <Card className="bg-background/60 backdrop-blur border-border/50">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Palette className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{_("tool_pattern_title")}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{_("tool_pattern_desc")}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Check className="w-3.5 h-3.5 text-green-500" />
-                  {_("tool_pattern_credit")}
-                </div>
-              </CardContent>
-            </Card>
+            <Link to="/workspace?tool=pattern_extract" className="block">
+              <Card className="bg-background/60 backdrop-blur border-border/50 h-full cursor-pointer transition-all hover:shadow-lg hover:border-primary/40 hover:-translate-y-1">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Palette className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{_("tool_pattern_title")}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{_("tool_pattern_desc")}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Check className="w-3.5 h-3.5 text-green-500" />
+                    {_("tool_pattern_credit")}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-            <Card className="bg-background/60 backdrop-blur border-border/50 ring-2 ring-primary/20">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{_("tool_aipattern_title")}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{_("tool_aipattern_desc")}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Check className="w-3.5 h-3.5 text-green-500" />
-                  {_("tool_aipattern_credit")}
-                </div>
-              </CardContent>
-            </Card>
+            <Link to="/workspace?tool=pattern_generate" className="block">
+              <Card className="bg-background/60 backdrop-blur border-border/50 ring-2 ring-primary/20 h-full cursor-pointer transition-all hover:shadow-lg hover:border-primary/40 hover:-translate-y-1">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Sparkles className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{_("tool_aipattern_title")}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{_("tool_aipattern_desc")}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Check className="w-3.5 h-3.5 text-green-500" />
+                    {_("tool_aipattern_credit")}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </section>

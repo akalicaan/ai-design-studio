@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +33,9 @@ type ToolType = "vectorize" | "bg_remove" | "upscale" | "pattern_extract" | "pat
 export default function Workspace() {
   const { user } = useAuth();
   const { _ } = useLanguage();
+  const [searchParams] = useSearchParams();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const referenceInputRef = useRef<HTMLInputElement>(null);
 
   const { data: balance, refetch: refetchBalance } = trpc.credit.balance.useQuery(
     undefined,
@@ -52,7 +54,11 @@ export default function Workspace() {
   const patternExtract = trpc.pattern.extract.useMutation();
   const patternGenerate = trpc.pattern.generate.useMutation();
 
-  const [selectedTool, setSelectedTool] = useState<ToolType>("pattern_generate");
+  const urlTool = searchParams.get("tool") as ToolType | null;
+  const validTools: ToolType[] = ["vectorize", "bg_remove", "upscale", "pattern_extract", "pattern_generate"];
+  const initialTool = urlTool && validTools.includes(urlTool) ? urlTool : "pattern_generate";
+
+  const [selectedTool, setSelectedTool] = useState<ToolType>(initialTool);
   const [precision, setPrecision] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -74,6 +80,8 @@ export default function Workspace() {
   const [prompt, setPrompt] = useState("");
   const [aiStyle, setAiStyle] = useState<"textile" | "floral" | "geometric" | "abstract" | "vintage">("textile");
   const [colorScheme, setColorScheme] = useState("");
+  const [referenceImage, setReferenceImage] = useState<string | null>(null);
+  const [referenceFile, setReferenceFile] = useState<File | null>(null);
 
   const currentCost =
     selectedTool === "vectorize"
@@ -166,16 +174,23 @@ export default function Workspace() {
     try {
       if (selectedTool === "pattern_generate") {
         if (!prompt.trim()) {
-          toast.error("Please enter a pattern description");
+          toast.error(_('aipattern_error_empty') || "Lütfen bir desen açıklaması girin");
           setProcessing(false);
           return;
         }
+
+        let referenceBase64: string | undefined;
+        if (referenceFile) {
+          referenceBase64 = await readFileAsBase64(referenceFile);
+        }
+
         const res = await patternGenerate.mutateAsync({
           prompt: prompt.trim(),
           style: aiStyle,
           colorScheme: colorScheme.trim() || undefined,
           makeSeamless: true,
           outputSize: "2048x2048",
+          referenceImage: referenceBase64,
         });
 
         if (res.success && res.imageUrl) {
@@ -256,7 +271,10 @@ export default function Workspace() {
     setResultStatus("idle");
     setResultError(null);
     setPrompt("");
+    setReferenceImage(null);
+    setReferenceFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (referenceInputRef.current) referenceInputRef.current.value = "";
   };
 
   const ActiveIcon = toolIcons[selectedTool];
@@ -402,14 +420,77 @@ export default function Workspace() {
                 {_("ws_settings")}
               </div>
 
+              {/* Prompt Input */}
               <div>
                 <label className="text-xs text-muted-foreground block mb-1.5">{_("aipattern_prompt_label")}</label>
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder={_("aipattern_prompt_placeholder")}
-                  className="w-full h-24 px-3 py-2 text-sm rounded-lg bg-background border border-border/50 focus:border-primary focus:outline-none resize-none"
+                  className="w-full h-32 px-3 py-2 text-sm rounded-lg bg-background border border-border/50 focus:border-primary focus:outline-none resize-none"
+                  dir="auto"
                 />
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  {_('aipattern_prompt_hint') || 'Her dilde yazabilirsiniz: Türkçe, English, العربية...'}
+                </p>
+              </div>
+
+              {/* Reference Image Upload */}
+              <div>
+                <label className="text-xs text-muted-foreground block mb-1.5">{_("aipattern_reference") || 'Referans Resim (Opsiyonel)'}</label>
+                {referenceImage ? (
+                  <div className="relative rounded-lg overflow-hidden border border-border/50">
+                    <img src={referenceImage} alt="Reference" className="w-full h-24 object-cover" />
+                    <button
+                      onClick={() => { setReferenceImage(null); setReferenceFile(null); }}
+                      className="absolute top-1 right-1 w-6 h-6 bg-black/60 text-white rounded-full flex items-center justify-center text-xs hover:bg-black/80"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => referenceInputRef.current?.click()}
+                    className="w-full h-16 border-2 border-dashed border-border/50 rounded-lg flex items-center justify-center gap-2 text-xs text-muted-foreground hover:border-primary/40 hover:bg-primary/5 transition-all"
+                  >
+                    <Upload className="w-4 h-4" />
+                    {_("aipattern_reference_upload") || 'Desen referansı yükleyin'}
+                  </button>
+                )}
+                <input
+                  ref={referenceInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setReferenceImage(URL.createObjectURL(file));
+                      setReferenceFile(file);
+                    }
+                  }}
+                />
+              </div>
+
+              {/* Quick Prompt Suggestions */}
+              <div>
+                <label className="text-xs text-muted-foreground block mb-1.5">{_("aipattern_suggestions") || 'Hazır Promptlar'}</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { label: _('suggestion_floral') || 'Çiçekli', text: 'seamless floral pattern with peonies and roses, soft watercolor style' },
+                    { label: _('suggestion_geometric') || 'Geometrik', text: 'seamless geometric pattern with islamic motifs, gold and navy blue' },
+                    { label: _('suggestion_abstract') || 'Soyut', text: 'seamless abstract pattern with flowing organic shapes, warm earth tones' },
+                    { label: _('suggestion_textile') || 'Tekstil', text: 'seamless textile pattern, paisley design, rich burgundy and gold' },
+                  ].map((s) => (
+                    <button
+                      key={s.label}
+                      onClick={() => setPrompt(s.text)}
+                      className="px-2 py-1 text-[10px] rounded-md bg-muted/60 hover:bg-primary/10 hover:text-primary border border-border/30 transition-colors"
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div>

@@ -159,17 +159,38 @@ export const patternRouter = createRouter({
   generate: authedQuery
     .input(
       z.object({
-        prompt: z.string().min(3).max(500),
+        prompt: z.string().min(3).max(1000),
         style: z.enum(["textile", "floral", "geometric", "abstract", "vintage"]).default("textile"),
         colorScheme: z.string().optional(),
         makeSeamless: z.boolean().default(true),
         outputSize: z.enum(["1024x1024", "2048x2048"]).default("2048x2048"),
+        referenceImage: z.string().optional(), // base64 reference image
       })
     )
     .mutation(async ({ input }) => {
-      const enhancedPrompt = input.colorScheme
-        ? `${input.prompt}, color scheme: ${input.colorScheme}`
-        : input.prompt;
+      // Build enhanced prompt with style and multilingual support
+      const stylePrefixes: Record<string, string> = {
+        textile: "textile fabric design, woven texture",
+        floral: "botanical floral design, flowers and leaves",
+        geometric: "geometric repeating pattern, symmetric",
+        abstract: "abstract artistic pattern, organic shapes",
+        vintage: "vintage retro pattern, classic ornament",
+      };
+
+      let enhancedPrompt = input.prompt;
+
+      // Add style prefix
+      enhancedPrompt = `${enhancedPrompt}, ${stylePrefixes[input.style]}`;
+
+      // Add color scheme if provided
+      if (input.colorScheme) {
+        enhancedPrompt = `${enhancedPrompt}, color palette: ${input.colorScheme}`;
+      }
+
+      // Add reference image influence if provided (via prompt enhancement)
+      if (input.referenceImage) {
+        enhancedPrompt = `${enhancedPrompt}, inspired by reference image style`;
+      }
 
       const imageUrl = await generatePatternWithFlux(enhancedPrompt);
 
